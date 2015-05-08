@@ -26,7 +26,7 @@ func Example() {
 	networksSettings := NetworksSettings{}
 	envSettings := EnvSettings{}
 	agentOptions := AgentOptions{}
-	settings := NewAgentSettingsForVM("agent-id", "vm-id", networksSettings, envSettings, agentOptions)
+	settings := NewAgentSettings("agent-id", "vm-id", networksSettings, envSettings, agentOptions)
 
 	// Set the agent settings for a VM
 	fmt.Printf("Updating settings for instance '%s' with '%#v'", instanceID, settings)

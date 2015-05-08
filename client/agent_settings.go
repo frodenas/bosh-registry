@@ -106,8 +106,8 @@ type VMSettings struct {
 	Name string `json:"name"`
 }
 
-// NewAgentSettingsForVM creates new agent settings for a VM.
-func NewAgentSettingsForVM(agentID string, vmCID string, networksSettings NetworksSettings, env EnvSettings, agentOptions AgentOptions) AgentSettings {
+// NewAgentSettings creates new agent settings for a VM.
+func NewAgentSettings(agentID string, vmCID string, networksSettings NetworksSettings, env EnvSettings, agentOptions AgentOptions) AgentSettings {
 	agentSettings := AgentSettings{
 		AgentID: agentID,
 		Disks: DisksSettings{

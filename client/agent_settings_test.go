@@ -8,7 +8,7 @@ import (
 )
 
 var _ = Describe("AgentSettings", func() {
-	Describe("NewAgentSettingsForVM", func() {
+	Describe("NewAgentSettings", func() {
 		It("returns agent settings", func() {
 			networks := NetworksSettings{
 				"fake-net-name": NetworkSettings{
@@ -37,7 +37,7 @@ var _ = Describe("AgentSettings", func() {
 				},
 			}
 
-			agentSettings := NewAgentSettingsForVM(
+			agentSettings := NewAgentSettings(
 				"fake-agent-id",
 				"fake-vm-id",
 				networks,
