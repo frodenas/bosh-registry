@@ -1,4 +1,4 @@
-# BOSH Registry
+# BOSH Registry [![Build Status](https://travis-ci.org/frodenas/bosh-registry.png)](https://travis-ci.org/frodenas/bosh-registry)
 
 This is a **simple** and **experimental** [BOSH Registry](http://bosh.io/docs/bosh-components.html#registry) Client and Server.
 
