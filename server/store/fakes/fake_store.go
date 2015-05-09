@@ -1,6 +1,6 @@
 package fakes
 
-type FakeRegistryStore struct {
+type FakeStore struct {
 	DeleteCalled bool
 	DeleteErr    error
 
@@ -13,17 +13,17 @@ type FakeRegistryStore struct {
 	SaveErr    error
 }
 
-func (s *FakeRegistryStore) Delete(key string) error {
+func (s *FakeStore) Delete(key string) error {
 	s.DeleteCalled = true
 	return s.DeleteErr
 }
 
-func (s *FakeRegistryStore) Get(key string) (string, bool, error) {
+func (s *FakeStore) Get(key string) (string, bool, error) {
 	s.GetCalled = true
 	return s.GetValue, s.GetFound, s.GetErr
 }
 
-func (s *FakeRegistryStore) Save(key, value string) error {
+func (s *FakeStore) Save(key, value string) error {
 	s.SaveCalled = true
 	return s.SaveErr
 }

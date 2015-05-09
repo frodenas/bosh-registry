@@ -22,7 +22,7 @@ var _ = Describe("InstanceHandler", func() {
 		logger           boshlog.Logger
 		responseRecorder *httptest.ResponseRecorder
 		request          *http.Request
-		registryStore    *fakes.FakeRegistryStore
+		registryStore    *fakes.FakeStore
 		instanceHandler  *InstanceHandler
 
 		config = Config{
@@ -35,7 +35,7 @@ var _ = Describe("InstanceHandler", func() {
 	)
 
 	BeforeEach(func() {
-		registryStore = &fakes.FakeRegistryStore{}
+		registryStore = &fakes.FakeStore{}
 		logger = boshlog.NewLogger(boshlog.LevelNone)
 		instanceHandler = NewInstanceHandler(config, registryStore, logger)
 	})
