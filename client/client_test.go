@@ -157,7 +157,7 @@ var _ = Describe("Client", func() {
 				Port:     int(serverPort),
 				Username: "fake-username",
 				Password: "fake-password",
-				TLS: TLSConfig{
+				TLS: ClientTLSOptions{
 					InsecureSkipVerify: true,
 					CertFile:           "../test/assets/public.pem",
 					KeyFile:            "../test/assets/private.pem",
