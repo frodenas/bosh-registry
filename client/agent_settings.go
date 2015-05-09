@@ -131,7 +131,7 @@ func NewAgentSettings(agentID string, vmCID string, networksSettings NetworksSet
 }
 
 // AttachPersistentDisk updates the agent settings in order to add an attached persistent disk.
-func (as AgentSettings) AttachPersistentDisk(diskID string, volumeID string) AgentSettings {
+func (as AgentSettings) AttachPersistentDisk(diskID string, volumeID string, path string) AgentSettings {
 	persistenDiskSettings := make(map[string]PersistentSettings)
 	if as.Disks.Persistent != nil {
 		persistenDiskSettings = as.Disks.Persistent
@@ -139,6 +139,7 @@ func (as AgentSettings) AttachPersistentDisk(diskID string, volumeID string) Age
 	persistenDiskSettings[diskID] = PersistentSettings{
 		ID:       diskID,
 		VolumeID: volumeID,
+		Path:     path,
 	}
 	as.Disks.Persistent = persistenDiskSettings
 
