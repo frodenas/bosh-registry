@@ -25,7 +25,7 @@ var _ = Describe("InstanceHandler", func() {
 		registryStore    *fakes.FakeRegistryStore
 		instanceHandler  *InstanceHandler
 
-		config = RegistryServerConfig{
+		config = Config{
 			Protocol: "http",
 			Address:  "fake-host",
 			Port:     5555,

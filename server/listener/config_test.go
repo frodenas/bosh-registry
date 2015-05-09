@@ -7,11 +7,11 @@ import (
 	. "github.com/frodenas/bosh-registry/server/listener"
 )
 
-var _ = Describe("RegistryServerConfig", func() {
+var _ = Describe("Config", func() {
 	var (
-		options RegistryServerConfig
+		options Config
 
-		validOptions = RegistryServerConfig{
+		validOptions = Config{
 			Protocol: "http",
 			Address:  "fake-host",
 			Port:     25777,
@@ -82,9 +82,9 @@ var _ = Describe("RegistryServerConfig", func() {
 
 var _ = Describe("TLSConfig", func() {
 	var (
-		options RegistryServerConfig
+		options Config
 
-		validOptions = RegistryServerConfig{
+		validOptions = Config{
 			Protocol: "https",
 			Address:  "fake-host",
 			Port:     5555,

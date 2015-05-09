@@ -15,13 +15,13 @@ import (
 const instanceHandlerLogTag = "RegistryServerInstanceHandler"
 
 type InstanceHandler struct {
-	config        RegistryServerConfig
+	config        Config
 	registryStore store.RegistryStore
 	logger        boshlog.Logger
 }
 
 func NewInstanceHandler(
-	config RegistryServerConfig,
+	config Config,
 	registryStore store.RegistryStore,
 	logger boshlog.Logger,
 ) *InstanceHandler {

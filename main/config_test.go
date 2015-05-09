@@ -14,7 +14,7 @@ import (
 	"github.com/frodenas/bosh-registry/server/store"
 )
 
-var validServerConfig = server.RegistryServerConfig{
+var validServerConfig = server.Config{
 	Protocol: "http",
 	Address:  "fake-host",
 	Port:     5555,

@@ -4,7 +4,7 @@ import (
 	bosherr "github.com/cloudfoundry/bosh-agent/errors"
 )
 
-type RegistryServerConfig struct {
+type Config struct {
 	Protocol string    `json:"protocol,omitempty"`
 	Address  string    `json:"address,omitempty"`
 	Port     int       `json:"port,omitempty"`
@@ -19,7 +19,7 @@ type TLSConfig struct {
 	CACertFile string `json:"cacertfile,omitempty"`
 }
 
-func (c RegistryServerConfig) Validate() error {
+func (c Config) Validate() error {
 	if c.Protocol != "http" && c.Protocol != "https" {
 		return bosherr.Error("Must provide a valid Protocol")
 	}
