@@ -43,7 +43,7 @@ func main() {
 	signals := make(chan os.Signal, 1)
 	signal.Notify(signals, syscall.SIGINT, syscall.SIGTERM)
 
-	listener := server.NewRegistryListener(config.Server, instanceHandler, logger)
+	listener := server.NewListener(config.Server, instanceHandler, logger)
 	errChan := listener.ListenAndServe()
 	select {
 	case err := <-errChan:

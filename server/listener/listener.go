@@ -11,28 +11,28 @@ import (
 	boshlog "github.com/cloudfoundry/bosh-agent/logger"
 )
 
-const RegistryListenerLogTag = "RegistryListener"
+const listenerLogTag = "RegistryServerListener"
 
-type RegistryListener struct {
+type Listener struct {
 	config   Config
 	handler  *InstanceHandler
 	logger   boshlog.Logger
 	listener net.Listener
 }
 
-func NewRegistryListener(
+func NewListener(
 	config Config,
 	handler *InstanceHandler,
 	logger boshlog.Logger,
-) RegistryListener {
-	return RegistryListener{
+) Listener {
+	return Listener{
 		config:  config,
 		handler: handler,
 		logger:  logger,
 	}
 }
 
-func (l *RegistryListener) ListenAndServe() <-chan error {
+func (l *Listener) ListenAndServe() <-chan error {
 	errChan := make(chan error, 1)
 
 	tcpListener, err := net.ListenTCP(
@@ -97,7 +97,7 @@ func (l *RegistryListener) ListenAndServe() <-chan error {
 	mux.HandleFunc("/instances/", l.handler.HandleFunc)
 	httpServer.Handler = mux
 
-	l.logger.Debug(RegistryListenerLogTag, "Starting Registry Server at %s://%s:%d", l.config.Protocol, l.config.Address, l.config.Port)
+	l.logger.Debug(listenerLogTag, "Starting Registry Server at %s://%s:%d", l.config.Protocol, l.config.Address, l.config.Port)
 	go func() {
 		err := httpServer.Serve(l.listener)
 		errChan <- err
@@ -106,6 +106,6 @@ func (l *RegistryListener) ListenAndServe() <-chan error {
 	return errChan
 }
 
-func (l *RegistryListener) Stop() {
+func (l *Listener) Stop() {
 	l.listener.Close()
 }
