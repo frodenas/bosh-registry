@@ -11,8 +11,8 @@ import (
 )
 
 type Config struct {
-	Server server.Config             `json:"server,omitempty"`
-	Store  store.RegistryStoreConfig `json:"store,omitempty"`
+	Server server.Config `json:"server,omitempty"`
+	Store  store.Config  `json:"store,omitempty"`
 }
 
 func NewConfigFromPath(path string, fs boshsys.FileSystem) (Config, error) {

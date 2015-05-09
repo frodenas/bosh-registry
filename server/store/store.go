@@ -14,7 +14,7 @@ type Store interface {
 }
 
 func NewStore(
-	config RegistryStoreConfig,
+	config Config,
 	logger boshlog.Logger,
 ) (Store, error) {
 	switch {

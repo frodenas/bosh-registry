@@ -22,7 +22,7 @@ var validServerConfig = server.Config{
 	Password: "fake-password",
 }
 
-var validStoreOptions = store.RegistryStoreConfig{
+var validStoreOptions = store.Config{
 	Adapter: "fake-adapter",
 }
 

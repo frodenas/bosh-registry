@@ -7,11 +7,11 @@ import (
 	. "github.com/frodenas/bosh-registry/server/store"
 )
 
-var _ = Describe("RegistryStoreConfig", func() {
+var _ = Describe("Config", func() {
 	var (
-		options RegistryStoreConfig
+		options Config
 
-		validOptions = RegistryStoreConfig{
+		validOptions = Config{
 			Adapter: "adapter",
 		}
 	)

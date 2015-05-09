@@ -11,7 +11,7 @@ import (
 
 var _ = Describe("Store", func() {
 	var (
-		config = RegistryStoreConfig{}
+		config = Config{}
 		logger = boshlog.NewLogger(boshlog.LevelNone)
 	)
 

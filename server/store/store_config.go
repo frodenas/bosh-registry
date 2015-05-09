@@ -4,12 +4,12 @@ import (
 	bosherr "github.com/cloudfoundry/bosh-agent/errors"
 )
 
-type RegistryStoreConfig struct {
+type Config struct {
 	Adapter string                 `json:"adapter,omitempty"`
 	Options map[string]interface{} `json:"options,omitempty"`
 }
 
-func (c RegistryStoreConfig) Validate() error {
+func (c Config) Validate() error {
 	if c.Adapter == "" {
 		return bosherr.Error("Must provide a non-empty Adapter")
 	}
