@@ -10,7 +10,7 @@ import (
 
 	. "github.com/frodenas/bosh-registry/main"
 
-	"github.com/frodenas/bosh-registry/server/listener"
+	"github.com/frodenas/bosh-registry/server"
 	"github.com/frodenas/bosh-registry/server/store"
 )
 

@@ -9,7 +9,7 @@ import (
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
 
-	. "github.com/frodenas/bosh-registry/server/listener"
+	. "github.com/frodenas/bosh-registry/server"
 
 	"github.com/frodenas/bosh-registry/server/store/fakes"
 

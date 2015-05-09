@@ -10,7 +10,7 @@ import (
 	boshlog "github.com/cloudfoundry/bosh-agent/logger"
 	boshsys "github.com/cloudfoundry/bosh-agent/system"
 
-	"github.com/frodenas/bosh-registry/server/listener"
+	"github.com/frodenas/bosh-registry/server"
 	"github.com/frodenas/bosh-registry/server/store"
 )
 

@@ -16,7 +16,7 @@ import (
 
 	boshlog "github.com/cloudfoundry/bosh-agent/logger"
 
-	"github.com/frodenas/bosh-registry/server/listener/fakes"
+	"github.com/frodenas/bosh-registry/server/fakes"
 )
 
 var _ = Describe("Client", func() {
