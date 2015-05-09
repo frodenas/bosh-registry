@@ -1,22 +1,12 @@
 # BOSH Registry [![Build Status](https://travis-ci.org/frodenas/bosh-registry.png)](https://travis-ci.org/frodenas/bosh-registry)
 
-This is a **simple** and **experimental** [BOSH Registry](http://bosh.io/docs/bosh-components.html#registry) Client and Server.
+This is an **experimental** [BOSH Registry](http://bosh.io/docs/bosh-components.html#registry) Client and Server.
 
 ## Disclaimer
 
 This is **NOT** presently a production ready BOSH Registry. This is a work in progress. It is suitable for experimentation and may not become supported in the future.
 
 ## BOSH Registry Client
-
-### Installation
-
-Using the standard `go get`:
-
-```
-$ go get github.com/frodenas/bosh-registry
-```
-
-### Usage
 
 For usage and examples see the [Godoc](https://godoc.org/github.com/frodenas/bosh-registry/client).
 
@@ -30,7 +20,6 @@ Using the standard `go get`:
 $ go get github.com/frodenas/bosh-registry
 ```
 
-
 ### Usage
 
 Create a configuration file:
@@ -41,12 +30,13 @@ Create a configuration file:
     "protocol": "http",
     "address": "127.0.0.1",
     "port": 25777,
-      "username": "admin",
-      "password": "admin",
+    "username": "admin",
+    "password": "admin",
     "tls": {
-      "certfile": "certfile.pem",
-      "keyfile": "keyfile.pem",
-      "cacertfile": "ca.crt"
+      "_comment": "TLS options only apply when using HTTPS protocol",
+      "certfile": "./test/assets/public.pem",
+      "keyfile": "./test/assets/private.pem",
+      "cacertfile": "./test/assets/ca.pem"
     }
   },
   "store": {
@@ -61,8 +51,14 @@ Create a configuration file:
 Run the registry using the previously created configuration file:
 
 ```
-$ registry -configPath="Path to configuration file"
+$ bosh-registry -configPath="Path to configuration file"
 ```
+
+### Caveats
+
+* The server has only support for the [bolt](https://github.com/boltdb/bolt) (a low-level key/value database) store adapter. The [store](https://github.com/frodenas/bosh-registry/blob/master/server/store/store.go) model is extensible, so contributions to add additional store adapters will be very welcomed.
+
+* The server **only** authenticates clients (based on credentials) on PUT and DELETE requests. The [Ruby BOSH Registry](https://github.com/cloudfoundry/bosh/tree/master/bosh-registry) performs also IP validation on GET requests, this doesn't happen in this registry.
 
 ## Contributing
 
