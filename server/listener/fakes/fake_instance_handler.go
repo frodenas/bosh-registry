@@ -12,21 +12,21 @@ type agentSettingsResponse struct {
 	Status   string `json:"status"`
 }
 
-type FakeRegistryInstanceHandler struct {
+type FakeInstanceHandler struct {
 	Username         string
 	Password         string
 	InstanceSettings []byte
 }
 
-func NewFakeRegistryInstanceHandler(username string, password string) *FakeRegistryInstanceHandler {
-	return &FakeRegistryInstanceHandler{
+func NewFakeInstanceHandler(username string, password string) *FakeInstanceHandler {
+	return &FakeInstanceHandler{
 		Username:         username,
 		Password:         password,
 		InstanceSettings: []byte{},
 	}
 }
 
-func (s *FakeRegistryInstanceHandler) HandleFunc(w http.ResponseWriter, req *http.Request) {
+func (s *FakeInstanceHandler) HandleFunc(w http.ResponseWriter, req *http.Request) {
 	if req.Method == "GET" {
 		if s.InstanceSettings != nil {
 			response := agentSettingsResponse{
@@ -72,7 +72,7 @@ func (s *FakeRegistryInstanceHandler) HandleFunc(w http.ResponseWriter, req *htt
 	}
 }
 
-func (s *FakeRegistryInstanceHandler) isAuthorized(req *http.Request) bool {
+func (s *FakeInstanceHandler) isAuthorized(req *http.Request) bool {
 	if s.Username != "" && s.Password != "" {
 		auth := s.Username + ":" + s.Password
 		expectedAuthorizationHeader := "Basic " + base64.StdEncoding.EncodeToString([]byte(auth))

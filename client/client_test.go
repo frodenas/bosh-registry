@@ -23,7 +23,7 @@ var _ = Describe("Client", func() {
 	var (
 		err error
 
-		instanceHandler *fakes.FakeRegistryInstanceHandler
+		instanceHandler *fakes.FakeInstanceHandler
 		mux             *http.ServeMux
 		registryServer  *httptest.Server
 
@@ -38,7 +38,7 @@ var _ = Describe("Client", func() {
 
 	BeforeEach(func() {
 		logger = boshlog.NewLogger(boshlog.LevelNone)
-		instanceHandler = fakes.NewFakeRegistryInstanceHandler("fake-username", "fake-password")
+		instanceHandler = fakes.NewFakeInstanceHandler("fake-username", "fake-password")
 		mux = http.NewServeMux()
 		mux.HandleFunc("/", instanceHandler.HandleFunc)
 

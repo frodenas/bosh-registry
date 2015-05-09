@@ -15,14 +15,14 @@ const RegistryListenerLogTag = "RegistryListener"
 
 type RegistryListener struct {
 	config   RegistryServerConfig
-	handler  *RegistryInstanceHandler
+	handler  *InstanceHandler
 	logger   boshlog.Logger
 	listener net.Listener
 }
 
 func NewRegistryListener(
 	config RegistryServerConfig,
-	handler *RegistryInstanceHandler,
+	handler *InstanceHandler,
 	logger boshlog.Logger,
 ) RegistryListener {
 	return RegistryListener{

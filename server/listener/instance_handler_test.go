@@ -16,14 +16,14 @@ import (
 	boshlog "github.com/cloudfoundry/bosh-agent/logger"
 )
 
-var _ = Describe("RegistryInstanceHandler", func() {
+var _ = Describe("InstanceHandler", func() {
 	var (
-		err                     error
-		logger                  boshlog.Logger
-		responseRecorder        *httptest.ResponseRecorder
-		request                 *http.Request
-		registryStore           *fakes.FakeRegistryStore
-		registryInstanceHandler *RegistryInstanceHandler
+		err              error
+		logger           boshlog.Logger
+		responseRecorder *httptest.ResponseRecorder
+		request          *http.Request
+		registryStore    *fakes.FakeRegistryStore
+		instanceHandler  *InstanceHandler
 
 		config = RegistryServerConfig{
 			Protocol: "http",
@@ -37,7 +37,7 @@ var _ = Describe("RegistryInstanceHandler", func() {
 	BeforeEach(func() {
 		registryStore = &fakes.FakeRegistryStore{}
 		logger = boshlog.NewLogger(boshlog.LevelNone)
-		registryInstanceHandler = NewRegistryInstanceHandler(config, registryStore, logger)
+		instanceHandler = NewInstanceHandler(config, registryStore, logger)
 	})
 
 	Describe("HandleFunc", func() {
@@ -49,7 +49,7 @@ var _ = Describe("RegistryInstanceHandler", func() {
 			request, err = http.NewRequest("GET", "/instances", nil)
 			Expect(err).NotTo(HaveOccurred())
 
-			registryInstanceHandler.HandleFunc(responseRecorder, request)
+			instanceHandler.HandleFunc(responseRecorder, request)
 			Expect(responseRecorder.Code).To(Equal(http.StatusNotFound))
 			Expect(responseRecorder.Body.String()).To(ContainSubstring("not_found"))
 		})
@@ -67,7 +67,7 @@ var _ = Describe("RegistryInstanceHandler", func() {
 			request, err = http.NewRequest("GET", "/instances/fake-instance-id/settings", nil)
 			Expect(err).NotTo(HaveOccurred())
 
-			registryInstanceHandler.HandleFunc(responseRecorder, request)
+			instanceHandler.HandleFunc(responseRecorder, request)
 			Expect(responseRecorder.Code).To(Equal(http.StatusOK))
 			Expect(responseRecorder.Body.String()).To(ContainSubstring("fake-instance-settings"))
 			Expect(registryStore.GetCalled).To(BeTrue())
@@ -77,7 +77,7 @@ var _ = Describe("RegistryInstanceHandler", func() {
 			request, err = http.NewRequest("GET", "/instances/fake-instance-id/settings", nil)
 			Expect(err).NotTo(HaveOccurred())
 
-			registryInstanceHandler.HandleFunc(responseRecorder, request)
+			instanceHandler.HandleFunc(responseRecorder, request)
 			Expect(responseRecorder.Code).To(Equal(http.StatusNotFound))
 			Expect(responseRecorder.Body.String()).To(ContainSubstring("not_found"))
 			Expect(registryStore.GetCalled).To(BeTrue())
@@ -89,7 +89,7 @@ var _ = Describe("RegistryInstanceHandler", func() {
 			request, err = http.NewRequest("GET", "/instances/fake-instance-id/settings", nil)
 			Expect(err).NotTo(HaveOccurred())
 
-			registryInstanceHandler.HandleFunc(responseRecorder, request)
+			instanceHandler.HandleFunc(responseRecorder, request)
 			Expect(responseRecorder.Code).To(Equal(http.StatusBadRequest))
 			Expect(responseRecorder.Body.String()).To(ContainSubstring("error"))
 			Expect(registryStore.GetCalled).To(BeTrue())
@@ -106,7 +106,7 @@ var _ = Describe("RegistryInstanceHandler", func() {
 			request.SetBasicAuth("fake-username", "fake-password")
 			Expect(err).NotTo(HaveOccurred())
 
-			registryInstanceHandler.HandleFunc(responseRecorder, request)
+			instanceHandler.HandleFunc(responseRecorder, request)
 			Expect(responseRecorder.Code).To(Equal(http.StatusOK))
 			Expect(registryStore.SaveCalled).To(BeTrue())
 		})
@@ -118,7 +118,7 @@ var _ = Describe("RegistryInstanceHandler", func() {
 			request.SetBasicAuth("fake-username", "fake-password")
 			Expect(err).NotTo(HaveOccurred())
 
-			registryInstanceHandler.HandleFunc(responseRecorder, request)
+			instanceHandler.HandleFunc(responseRecorder, request)
 			Expect(responseRecorder.Code).To(Equal(http.StatusBadRequest))
 			Expect(responseRecorder.Body.String()).To(ContainSubstring("error"))
 			Expect(registryStore.SaveCalled).To(BeTrue())
@@ -128,7 +128,7 @@ var _ = Describe("RegistryInstanceHandler", func() {
 			request, err = http.NewRequest("PUT", "/instances/fake-instance-id/settings", bytes.NewReader([]byte("fake-instance-settings")))
 			Expect(err).NotTo(HaveOccurred())
 
-			registryInstanceHandler.HandleFunc(responseRecorder, request)
+			instanceHandler.HandleFunc(responseRecorder, request)
 			Expect(responseRecorder.Code).To(Equal(http.StatusUnauthorized))
 			Expect(responseRecorder.HeaderMap).To(HaveKey("Www-Authenticate"))
 		})
@@ -147,7 +147,7 @@ var _ = Describe("RegistryInstanceHandler", func() {
 			request.SetBasicAuth("fake-username", "fake-password")
 			Expect(err).NotTo(HaveOccurred())
 
-			registryInstanceHandler.HandleFunc(responseRecorder, request)
+			instanceHandler.HandleFunc(responseRecorder, request)
 			Expect(responseRecorder.Code).To(Equal(http.StatusOK))
 			Expect(registryStore.DeleteCalled).To(BeTrue())
 		})
@@ -159,7 +159,7 @@ var _ = Describe("RegistryInstanceHandler", func() {
 			request.SetBasicAuth("fake-username", "fake-password")
 			Expect(err).NotTo(HaveOccurred())
 
-			registryInstanceHandler.HandleFunc(responseRecorder, request)
+			instanceHandler.HandleFunc(responseRecorder, request)
 			Expect(responseRecorder.Code).To(Equal(http.StatusBadRequest))
 			Expect(responseRecorder.Body.String()).To(ContainSubstring("error"))
 			Expect(registryStore.DeleteCalled).To(BeTrue())
@@ -169,7 +169,7 @@ var _ = Describe("RegistryInstanceHandler", func() {
 			request, err = http.NewRequest("DELETE", "/instances/fake-instance-id/settings", nil)
 			Expect(err).NotTo(HaveOccurred())
 
-			registryInstanceHandler.HandleFunc(responseRecorder, request)
+			instanceHandler.HandleFunc(responseRecorder, request)
 			Expect(responseRecorder.Code).To(Equal(http.StatusUnauthorized))
 			Expect(responseRecorder.HeaderMap).To(HaveKey("Www-Authenticate"))
 		})

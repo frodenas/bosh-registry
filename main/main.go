@@ -34,7 +34,7 @@ func main() {
 		os.Exit(1)
 	}
 
-	registryInstanceHandler, err := createRegistryInstanceHandler(config, logger)
+	instanceHandler, err := createInstanceHandler(config, logger)
 	if err != nil {
 		logger.Error(mainLogTag, "Creating Registry Instance Handler: %s", err.Error())
 		os.Exit(1)
@@ -43,7 +43,7 @@ func main() {
 	signals := make(chan os.Signal, 1)
 	signal.Notify(signals, syscall.SIGINT, syscall.SIGTERM)
 
-	listener := server.NewRegistryListener(config.Server, registryInstanceHandler, logger)
+	listener := server.NewRegistryListener(config.Server, instanceHandler, logger)
 	errChan := listener.ListenAndServe()
 	select {
 	case err := <-errChan:
@@ -59,13 +59,13 @@ func main() {
 	os.Exit(0)
 }
 
-func createRegistryInstanceHandler(config Config, logger boshlog.Logger) (*server.RegistryInstanceHandler, error) {
+func createInstanceHandler(config Config, logger boshlog.Logger) (*server.InstanceHandler, error) {
 	registryStore, err := store.NewRegistryStore(config.Store, logger)
 	if err != nil {
 		return nil, bosherr.WrapError(err, "Creating a Registry Store")
 	}
 
-	registryInstanceHandler := server.NewRegistryInstanceHandler(config.Server, registryStore, logger)
+	instanceHandler := server.NewInstanceHandler(config.Server, registryStore, logger)
 
-	return registryInstanceHandler, nil
+	return instanceHandler, nil
 }
