@@ -58,13 +58,13 @@ type DisksSettings struct {
 // PersistentSettings are the Persistent Disk settings for a particular VM.
 type PersistentSettings struct {
 	// Persistent disk ID
-	ID string
+	ID string `json:"id"`
 
 	// Persistent disk volume ID
-	VolumeID string
+	VolumeID string `json:"volume_id"`
 
 	// Persistent disk path
-	Path string
+	Path string `json:"path"`
 }
 
 // EnvSettings are the Environment settings for a particular VM.
