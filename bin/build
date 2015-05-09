@@ -4,4 +4,4 @@ set -e
 
 bin=$(dirname $0)
 
-$bin/go build -o $bin/../out/registry github.com/frodenas/bosh-registry/main
+$bin/go build -o $bin/../out/bosh-registry github.com/frodenas/bosh-registry/main
