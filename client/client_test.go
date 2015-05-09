@@ -25,11 +25,11 @@ var _ = Describe("Client", func() {
 
 		instanceHandler *fakes.FakeInstanceHandler
 		mux             *http.ServeMux
-		registryServer  *httptest.Server
+		server          *httptest.Server
 
-		options        ClientOptions
-		logger         boshlog.Logger
-		registryClient Client
+		options ClientOptions
+		logger  boshlog.Logger
+		client  Client
 
 		instanceID           string
 		expectedAgentSet     AgentSettings
@@ -50,8 +50,8 @@ var _ = Describe("Client", func() {
 
 	Context("when using http", func() {
 		BeforeEach(func() {
-			registryServer = httptest.NewServer(mux)
-			serverURL, err := url.Parse(registryServer.URL)
+			server = httptest.NewServer(mux)
+			serverURL, err := url.Parse(server.URL)
 			Expect(err).ToNot(HaveOccurred())
 			serverHost, serverPortString, err := net.SplitHostPort(serverURL.Host)
 			Expect(err).ToNot(HaveOccurred())
@@ -65,11 +65,11 @@ var _ = Describe("Client", func() {
 				Username: "fake-username",
 				Password: "fake-password",
 			}
-			registryClient = NewClient(options, logger)
+			client = NewClient(options, logger)
 		})
 
 		AfterEach(func() {
-			registryServer.Close()
+			server.Close()
 		})
 
 		Describe("Delete", func() {
@@ -79,7 +79,7 @@ var _ = Describe("Client", func() {
 				})
 
 				It("deletes settings in the registry", func() {
-					err = registryClient.Delete(instanceID)
+					err = client.Delete(instanceID)
 					Expect(err).ToNot(HaveOccurred())
 					Expect(instanceHandler.InstanceSettings).To(Equal([]byte{}))
 				})
@@ -88,7 +88,7 @@ var _ = Describe("Client", func() {
 			Context("when settings for instance does not exist", func() {
 				It("should not return an error", func() {
 					Expect(instanceHandler.InstanceSettings).To(Equal([]byte{}))
-					err = registryClient.Delete(instanceID)
+					err = client.Delete(instanceID)
 					Expect(err).ToNot(HaveOccurred())
 				})
 			})
@@ -96,14 +96,14 @@ var _ = Describe("Client", func() {
 
 		Describe("Endpoint", func() {
 			It("returns the BOSH Registry endpoint", func() {
-				endpoint := registryClient.Endpoint()
+				endpoint := client.Endpoint()
 				Expect(endpoint).To(Equal(fmt.Sprintf("%s://%s:%d", options.Protocol, options.Host, options.Port)))
 			})
 		})
 
 		Describe("EndpointWithCredentials", func() {
 			It("returns the BOSH Registry endpoint with credentials", func() {
-				endpoint := registryClient.EndpointWithCredentials()
+				endpoint := client.EndpointWithCredentials()
 				Expect(endpoint).To(Equal(fmt.Sprintf("%s://%s:%s@%s:%d", options.Protocol, options.Username, options.Password, options.Host, options.Port)))
 			})
 		})
@@ -115,7 +115,7 @@ var _ = Describe("Client", func() {
 				})
 
 				It("fetches settings from the registry", func() {
-					agentSet, err := registryClient.Fetch(instanceID)
+					agentSet, err := client.Fetch(instanceID)
 					Expect(err).ToNot(HaveOccurred())
 					Expect(agentSet).To(Equal(expectedAgentSet))
 				})
@@ -124,7 +124,7 @@ var _ = Describe("Client", func() {
 			Context("when settings for instance does not exist", func() {
 				It("returns an error", func() {
 					Expect(instanceHandler.InstanceSettings).To(Equal([]byte{}))
-					agentSet, err := registryClient.Fetch(instanceID)
+					agentSet, err := client.Fetch(instanceID)
 					Expect(err).To(HaveOccurred())
 					Expect(agentSet).To(Equal(AgentSettings{}))
 				})
@@ -134,7 +134,7 @@ var _ = Describe("Client", func() {
 		Describe("Update", func() {
 			It("updates settings in the registry", func() {
 				Expect(instanceHandler.InstanceSettings).To(Equal([]byte{}))
-				err := registryClient.Update(instanceID, expectedAgentSet)
+				err := client.Update(instanceID, expectedAgentSet)
 				Expect(err).ToNot(HaveOccurred())
 				Expect(instanceHandler.InstanceSettings).To(Equal(expectedAgentSetJSON))
 			})
@@ -143,8 +143,8 @@ var _ = Describe("Client", func() {
 
 	Context("when using https", func() {
 		BeforeEach(func() {
-			registryServer = httptest.NewTLSServer(mux)
-			serverURL, err := url.Parse(registryServer.URL)
+			server = httptest.NewTLSServer(mux)
+			serverURL, err := url.Parse(server.URL)
 			Expect(err).ToNot(HaveOccurred())
 			serverHost, serverPortString, err := net.SplitHostPort(serverURL.Host)
 			Expect(err).ToNot(HaveOccurred())
@@ -164,17 +164,17 @@ var _ = Describe("Client", func() {
 					CACertFile:         "../test/assets/ca.pem",
 				},
 			}
-			registryClient = NewClient(options, logger)
+			client = NewClient(options, logger)
 		})
 
 		AfterEach(func() {
-			registryServer.Close()
+			server.Close()
 		})
 
 		Describe("Delete", func() {
 			It("deletes settings in the registry", func() {
 				instanceHandler.InstanceSettings = expectedAgentSetJSON
-				err = registryClient.Delete(instanceID)
+				err = client.Delete(instanceID)
 				Expect(err).ToNot(HaveOccurred())
 				Expect(instanceHandler.InstanceSettings).To(Equal([]byte{}))
 			})
@@ -182,14 +182,14 @@ var _ = Describe("Client", func() {
 
 		Describe("Endpoint", func() {
 			It("returns the BOSH Registry endpoint", func() {
-				endpoint := registryClient.Endpoint()
+				endpoint := client.Endpoint()
 				Expect(endpoint).To(Equal(fmt.Sprintf("%s://%s:%d", options.Protocol, options.Host, options.Port)))
 			})
 		})
 
 		Describe("EndpointWithCredentials", func() {
 			It("returns the BOSH Registry endpoint with credentials", func() {
-				endpoint := registryClient.EndpointWithCredentials()
+				endpoint := client.EndpointWithCredentials()
 				Expect(endpoint).To(Equal(fmt.Sprintf("%s://%s:%s@%s:%d", options.Protocol, options.Username, options.Password, options.Host, options.Port)))
 			})
 		})
@@ -197,7 +197,7 @@ var _ = Describe("Client", func() {
 		Describe("Fetch", func() {
 			It("fetches settings from the registry", func() {
 				instanceHandler.InstanceSettings = expectedAgentSetJSON
-				agentSet, err := registryClient.Fetch(instanceID)
+				agentSet, err := client.Fetch(instanceID)
 				Expect(err).ToNot(HaveOccurred())
 				Expect(agentSet).To(Equal(expectedAgentSet))
 			})
@@ -206,7 +206,7 @@ var _ = Describe("Client", func() {
 		Describe("Update", func() {
 			It("updates settings in the registry", func() {
 				Expect(instanceHandler.InstanceSettings).To(Equal([]byte{}))
-				err := registryClient.Update(instanceID, expectedAgentSet)
+				err := client.Update(instanceID, expectedAgentSet)
 				Expect(err).ToNot(HaveOccurred())
 				Expect(instanceHandler.InstanceSettings).To(Equal(expectedAgentSetJSON))
 			})
