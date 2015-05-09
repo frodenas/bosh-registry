@@ -107,5 +107,6 @@ func (l *Listener) ListenAndServe() <-chan error {
 }
 
 func (l *Listener) Stop() {
+	l.logger.Debug(listenerLogTag, "Stopping Registry Server")
 	l.listener.Close()
 }
