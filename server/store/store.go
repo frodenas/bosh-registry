@@ -7,16 +7,16 @@ import (
 	"github.com/mitchellh/mapstructure"
 )
 
-type RegistryStore interface {
+type Store interface {
 	Delete(string) error
 	Get(string) (string, bool, error)
 	Save(string, string) error
 }
 
-func NewRegistryStore(
+func NewStore(
 	config RegistryStoreConfig,
 	logger boshlog.Logger,
-) (RegistryStore, error) {
+) (Store, error) {
 	switch {
 	case config.Adapter == "bolt":
 		boltRegistryStoreConfig := BoltRegistryStoreConfig{}

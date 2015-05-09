@@ -60,12 +60,12 @@ func main() {
 }
 
 func createInstanceHandler(config Config, logger boshlog.Logger) (*server.InstanceHandler, error) {
-	registryStore, err := store.NewRegistryStore(config.Store, logger)
+	store, err := store.NewStore(config.Store, logger)
 	if err != nil {
 		return nil, bosherr.WrapError(err, "Creating a Registry Store")
 	}
 
-	instanceHandler := server.NewInstanceHandler(config.Server, registryStore, logger)
+	instanceHandler := server.NewInstanceHandler(config.Server, store, logger)
 
 	return instanceHandler, nil
 }
