@@ -4,11 +4,11 @@ import (
 	bosherr "github.com/cloudfoundry/bosh-agent/errors"
 )
 
-type BoltRegistryStoreConfig struct {
+type BoltConfig struct {
 	DBFile string
 }
 
-func (c BoltRegistryStoreConfig) Validate() error {
+func (c BoltConfig) Validate() error {
 	if c.DBFile == "" {
 		return bosherr.Error("Must provide a non-empty DBFile")
 	}

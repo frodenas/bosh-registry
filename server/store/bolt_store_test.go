@@ -12,12 +12,12 @@ import (
 	boshlog "github.com/cloudfoundry/bosh-agent/logger"
 )
 
-var _ = Describe("BoltRegistryStore", func() {
+var _ = Describe("BoltStore", func() {
 	var (
-		err               error
-		boltRegistryStore BoltRegistryStore
-		dbFile            *os.File
-		config            BoltRegistryStoreConfig
+		err       error
+		boltStore BoltStore
+		dbFile    *os.File
+		config    BoltConfig
 
 		logger = boshlog.NewLogger(boshlog.LevelNone)
 	)
@@ -26,25 +26,25 @@ var _ = Describe("BoltRegistryStore", func() {
 		dbFile, err = ioutil.TempFile("", "test-bolt")
 		Expect(err).ToNot(HaveOccurred())
 
-		config = BoltRegistryStoreConfig{
+		config = BoltConfig{
 			DBFile: dbFile.Name(),
 		}
-		boltRegistryStore = NewBoltRegistryStore(config, logger)
+		boltStore = NewBoltStore(config, logger)
 	})
 
 	Describe("Get", func() {
 		It("returns the value if key exist", func() {
-			err = boltRegistryStore.Save("fake-key", "fake-value")
+			err = boltStore.Save("fake-key", "fake-value")
 			Expect(err).ToNot(HaveOccurred())
 
-			value, found, err := boltRegistryStore.Get("fake-key")
+			value, found, err := boltStore.Get("fake-key")
 			Expect(err).ToNot(HaveOccurred())
 			Expect(found).To(BeTrue())
 			Expect(value).To(Equal("fake-value"))
 		})
 
 		It("returns false if key does not exist", func() {
-			_, found, err := boltRegistryStore.Get("fake-key")
+			_, found, err := boltStore.Get("fake-key")
 			Expect(err).ToNot(HaveOccurred())
 			Expect(found).To(BeFalse())
 		})
@@ -52,42 +52,42 @@ var _ = Describe("BoltRegistryStore", func() {
 
 	Describe("Delete", func() {
 		It("deletes the key if it exist", func() {
-			err = boltRegistryStore.Save("fake-key", "fake-value")
+			err = boltStore.Save("fake-key", "fake-value")
 			Expect(err).ToNot(HaveOccurred())
 
-			err = boltRegistryStore.Delete("fake-key")
+			err = boltStore.Delete("fake-key")
 			Expect(err).ToNot(HaveOccurred())
 
-			_, found, err := boltRegistryStore.Get("fake-key")
+			_, found, err := boltStore.Get("fake-key")
 			Expect(err).ToNot(HaveOccurred())
 			Expect(found).To(BeFalse())
 		})
 
 		It("does not return error if key does not exist", func() {
-			err = boltRegistryStore.Delete("fake-key")
+			err = boltStore.Delete("fake-key")
 			Expect(err).ToNot(HaveOccurred())
 		})
 	})
 
 	Describe("Save", func() {
 		It("stores the appropiate value when key does not exist", func() {
-			err = boltRegistryStore.Save("fake-key", "fake-value")
+			err = boltStore.Save("fake-key", "fake-value")
 			Expect(err).ToNot(HaveOccurred())
 
-			value, found, err := boltRegistryStore.Get("fake-key")
+			value, found, err := boltStore.Get("fake-key")
 			Expect(err).ToNot(HaveOccurred())
 			Expect(found).To(BeTrue())
 			Expect(value).To(Equal("fake-value"))
 		})
 
 		It("updates the appropiate value when key already exist", func() {
-			err = boltRegistryStore.Save("fake-key", "fake-value")
+			err = boltStore.Save("fake-key", "fake-value")
 			Expect(err).ToNot(HaveOccurred())
 
-			err = boltRegistryStore.Save("fake-key", "fake-new-value")
+			err = boltStore.Save("fake-key", "fake-new-value")
 			Expect(err).ToNot(HaveOccurred())
 
-			value, found, err := boltRegistryStore.Get("fake-key")
+			value, found, err := boltStore.Get("fake-key")
 			Expect(err).ToNot(HaveOccurred())
 			Expect(found).To(BeTrue())
 			Expect(value).To(Equal("fake-new-value"))

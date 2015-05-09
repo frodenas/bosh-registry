@@ -7,11 +7,11 @@ import (
 	. "github.com/frodenas/bosh-registry/server/store"
 )
 
-var _ = Describe("BoltRegistryStoreConfig", func() {
+var _ = Describe("BoltConfig", func() {
 	var (
-		options BoltRegistryStoreConfig
+		options BoltConfig
 
-		validOptions = BoltRegistryStoreConfig{
+		validOptions = BoltConfig{
 			DBFile: "fake-dbfile",
 		}
 	)

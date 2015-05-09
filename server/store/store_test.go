@@ -31,10 +31,10 @@ var _ = Describe("Store", func() {
 			})
 
 			It("does not return error if bolt configuration is not valid", func() {
-				boltRegistryStoreConfig := map[string]interface{}{
+				boltConfig := map[string]interface{}{
 					"DBFile": "fake-dbfile",
 				}
-				config.Options = boltRegistryStoreConfig
+				config.Options = boltConfig
 				_, err := NewStore(config, logger)
 				Expect(err).ToNot(HaveOccurred())
 			})

@@ -19,18 +19,18 @@ func NewStore(
 ) (Store, error) {
 	switch {
 	case config.Adapter == "bolt":
-		boltRegistryStoreConfig := BoltRegistryStoreConfig{}
-		err := mapstructure.Decode(config.Options, &boltRegistryStoreConfig)
+		boltConfig := BoltConfig{}
+		err := mapstructure.Decode(config.Options, &boltConfig)
 		if err != nil {
 			return nil, bosherr.WrapError(err, "Decoding Bolt Registry Store configuration")
 		}
 
-		err = boltRegistryStoreConfig.Validate()
+		err = boltConfig.Validate()
 		if err != nil {
 			return nil, bosherr.WrapError(err, "Validating Bolt Registry Store configuration")
 		}
 
-		return NewBoltRegistryStore(boltRegistryStoreConfig, logger), nil
+		return NewBoltStore(boltConfig, logger), nil
 	}
 
 	return nil, bosherr.Errorf("Registry Store adapter '%s' not supported", config.Adapter)

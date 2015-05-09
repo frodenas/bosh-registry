@@ -9,36 +9,36 @@ import (
 	"github.com/boltdb/bolt"
 )
 
-const BoltRegistryStoreLogTag = "BoltRegistryStore"
-const BoltRegistryStoreFileMode = 0600
-const BoltRegistryStoreFileLockTimeout = 1
-const BoltRegistryStoreBucketName = "Registry"
+const boltStoreLogTag = "BoltRegistryStore"
+const boltStoreFileMode = 0600
+const boltStoreFileLockTimeout = 1
+const boltStoreBucketName = "Registry"
 
-type BoltRegistryStore struct {
-	config BoltRegistryStoreConfig
+type BoltStore struct {
+	config BoltConfig
 	logger boshlog.Logger
 }
 
-func NewBoltRegistryStore(
-	config BoltRegistryStoreConfig,
+func NewBoltStore(
+	config BoltConfig,
 	logger boshlog.Logger,
-) BoltRegistryStore {
-	return BoltRegistryStore{
+) BoltStore {
+	return BoltStore{
 		config: config,
 		logger: logger,
 	}
 }
 
-func (s BoltRegistryStore) Delete(key string) error {
+func (s BoltStore) Delete(key string) error {
 	db, err := s.openDB()
 	if err != nil {
 		return bosherr.WrapErrorf(err, "Deleting key '%s'", key)
 	}
 	defer db.Close()
 
-	s.logger.Debug(BoltRegistryStoreLogTag, "Deleting key '%s'", key)
+	s.logger.Debug(boltStoreLogTag, "Deleting key '%s'", key)
 	err = db.Update(func(tx *bolt.Tx) error {
-		bucket := tx.Bucket([]byte(BoltRegistryStoreBucketName))
+		bucket := tx.Bucket([]byte(boltStoreBucketName))
 		if bucket != nil {
 			return bucket.Delete([]byte(key))
 		}
@@ -51,7 +51,7 @@ func (s BoltRegistryStore) Delete(key string) error {
 	return nil
 }
 
-func (s BoltRegistryStore) Get(key string) (string, bool, error) {
+func (s BoltStore) Get(key string) (string, bool, error) {
 	db, err := s.openDB()
 	if err != nil {
 		return "", false, bosherr.WrapErrorf(err, "Reading key '%s'", key)
@@ -59,9 +59,9 @@ func (s BoltRegistryStore) Get(key string) (string, bool, error) {
 	defer db.Close()
 
 	var value []byte
-	s.logger.Debug(BoltRegistryStoreLogTag, "Reading key '%s'", key)
+	s.logger.Debug(boltStoreLogTag, "Reading key '%s'", key)
 	db.View(func(tx *bolt.Tx) error {
-		bucket := tx.Bucket([]byte(BoltRegistryStoreBucketName))
+		bucket := tx.Bucket([]byte(boltStoreBucketName))
 		if bucket != nil {
 			value = bucket.Get([]byte(key))
 		}
@@ -74,18 +74,18 @@ func (s BoltRegistryStore) Get(key string) (string, bool, error) {
 	return "", false, nil
 }
 
-func (s BoltRegistryStore) Save(key string, value string) error {
+func (s BoltStore) Save(key string, value string) error {
 	db, err := s.openDB()
 	if err != nil {
 		return bosherr.WrapErrorf(err, "Saving key '%s'", key)
 	}
 	defer db.Close()
 
-	s.logger.Debug(BoltRegistryStoreLogTag, "Saving key '%s'", key)
+	s.logger.Debug(boltStoreLogTag, "Saving key '%s'", key)
 	err = db.Update(func(tx *bolt.Tx) error {
-		bucket, err := tx.CreateBucketIfNotExists([]byte(BoltRegistryStoreBucketName))
+		bucket, err := tx.CreateBucketIfNotExists([]byte(boltStoreBucketName))
 		if err != nil {
-			return bosherr.WrapErrorf(err, "Creating bucket '%s'", BoltRegistryStoreBucketName)
+			return bosherr.WrapErrorf(err, "Creating bucket '%s'", boltStoreBucketName)
 		}
 		return bucket.Put([]byte(key), []byte(value))
 	})
@@ -96,11 +96,11 @@ func (s BoltRegistryStore) Save(key string, value string) error {
 	return nil
 }
 
-func (s BoltRegistryStore) openDB() (db *bolt.DB, err error) {
+func (s BoltStore) openDB() (db *bolt.DB, err error) {
 	dbOptions := &bolt.Options{
-		Timeout: BoltRegistryStoreFileLockTimeout * time.Second,
+		Timeout: boltStoreFileLockTimeout * time.Second,
 	}
-	db, err = bolt.Open(s.config.DBFile, BoltRegistryStoreFileMode, dbOptions)
+	db, err = bolt.Open(s.config.DBFile, boltStoreFileMode, dbOptions)
 	if err != nil {
 		return db, bosherr.WrapError(err, "Opening Bolt database")
 	}
