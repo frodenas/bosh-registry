@@ -1,0 +1,13 @@
+FROM scratch
+MAINTAINER Ferran Rodenas <frodenas@gmail.com>
+
+# Add files
+ADD main /bosh-registry
+ADD bosh-registry.json /bosh-registry.json
+
+# Command to run
+ENTRYPOINT ["/bosh-registry"]
+CMD ["-configPath=/bosh-registry.json"]
+
+# Expose listen ports
+EXPOSE 25777

@@ -1,0 +1,24 @@
+#!/bin/bash
+
+set -e
+
+echo -e "\n Cleaning BOSH Registry Docker image..."
+docker rmi frodenas/bosh-registry || true
+
+echo -e "\n Cleaning Builder Docker image..."
+docker rmi frodenas/bosh-registry-builder || true
+
+echo -e "\n Creating Builder Docker image..."
+docker build -t frodenas/bosh-registry-builder .
+
+echo -e "\n Creating BOSH Registry Docker image..."
+docker run -ti --rm --name bosh-registry-builder \
+       -e DOCKER_HOST=${DOCKER_HOST} \
+       -e DOCKER_TLS_VERIFY=${DOCKER_TLS_VERIFY} \
+       -e DOCKER_CERT_PATH=${DOCKER_CERT_PATH} \
+       -v ${DOCKER_CERT_PATH}:${DOCKER_CERT_PATH} \
+       -v $(which docker):$(which docker) \
+       frodenas/bosh-registry-builder
+
+echo -e "\n Cleaning Builder Docker image..."
+docker rmi frodenas/bosh-registry-builder

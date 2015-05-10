@@ -17,7 +17,7 @@ For usage and examples see the [Godoc](https://godoc.org/github.com/frodenas/bos
 Using the standard `go get`:
 
 ```
-$ go get github.com/frodenas/bosh-registry
+$ go get github.com/frodenas/bosh-registry/main
 ```
 
 ### Usage
@@ -28,7 +28,7 @@ Create a configuration file:
 {
   "server": {
     "protocol": "http",
-    "address": "127.0.0.1",
+    "address": "0.0.0.0",
     "port": 25777,
     "username": "admin",
     "password": "admin",
@@ -53,6 +53,15 @@ Run the registry using the previously created configuration file:
 ```
 $ bosh-registry -configPath="Path to configuration file"
 ```
+
+### Docker
+
+If you want to run the BOSH Registry on a Docker container, you can use the [frodenas/bosh-registry](https://registry.hub.docker.com/u/frodenas/bosh-registry/) Docker image.
+
+```
+$ docker run -d --name bosh-registry -p 25777:25777 frodenas/bosh-registry
+```
+
 
 ### Caveats
 

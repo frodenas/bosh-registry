@@ -1,0 +1,15 @@
+{
+  "server": {
+    "protocol": "http",
+    "address": "0.0.0.0",
+    "port": 25777,
+    "username": "admin",
+    "password": "admin"
+  },
+  "store": {
+    "adapter": "bolt",
+    "options": {
+      "dbfile": "registry.db"
+    }
+  }
+}
