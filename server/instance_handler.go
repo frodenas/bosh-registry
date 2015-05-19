@@ -7,7 +7,7 @@ import (
 	"net/http"
 	"regexp"
 
-	boshlog "github.com/cloudfoundry/bosh-agent/logger"
+	boshlog "github.com/cloudfoundry/bosh-utils/logger"
 
 	"github.com/frodenas/bosh-registry/server/store"
 )

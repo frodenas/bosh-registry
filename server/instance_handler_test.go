@@ -13,7 +13,7 @@ import (
 
 	"github.com/frodenas/bosh-registry/server/store/fakes"
 
-	boshlog "github.com/cloudfoundry/bosh-agent/logger"
+	boshlog "github.com/cloudfoundry/bosh-utils/logger"
 )
 
 var _ = Describe("InstanceHandler", func() {

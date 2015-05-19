@@ -9,7 +9,7 @@ import (
 
 	. "github.com/frodenas/bosh-registry/server/store"
 
-	boshlog "github.com/cloudfoundry/bosh-agent/logger"
+	boshlog "github.com/cloudfoundry/bosh-utils/logger"
 )
 
 var _ = Describe("BoltStore", func() {
