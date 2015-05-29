@@ -7,38 +7,38 @@
 	"Deps": [
 		{
 			"ImportPath": "github.com/boltdb/bolt",
-			"Comment": "v1.0-92-g957d850",
-			"Rev": "957d850b5158a4eebf915476058e720f43459584"
+			"Comment": "v1.0-98-gafceb31",
+			"Rev": "afceb316b96ea97cbac6d23afbdf69543d80748a"
 		},
 		{
 			"ImportPath": "github.com/cloudfoundry/bosh-utils/errors",
-			"Rev": "860ec42f3966efe5cce25381aa4eb980b1da36b9"
+			"Rev": "d70e86451e700c2a63ca801472e0607b83b60c45"
+		},
+		{
+			"ImportPath": "github.com/cloudfoundry/bosh-utils/internal/github.com/nu7hatch/gouuid",
+			"Rev": "d70e86451e700c2a63ca801472e0607b83b60c45"
 		},
 		{
 			"ImportPath": "github.com/cloudfoundry/bosh-utils/logger",
-			"Rev": "860ec42f3966efe5cce25381aa4eb980b1da36b9"
+			"Rev": "d70e86451e700c2a63ca801472e0607b83b60c45"
 		},
 		{
 			"ImportPath": "github.com/cloudfoundry/bosh-utils/system",
-			"Rev": "860ec42f3966efe5cce25381aa4eb980b1da36b9"
+			"Rev": "d70e86451e700c2a63ca801472e0607b83b60c45"
 		},
 		{
 			"ImportPath": "github.com/mitchellh/mapstructure",
-			"Rev": "740c764bc6149d3f1806231418adb9f52c11bcbf"
-		},
-		{
-			"ImportPath": "github.com/nu7hatch/gouuid",
-			"Rev": "179d4d0c4d8d407a32af483c2354df1d2c91e6c3"
+			"Rev": "bb4fbaf540ca2f7057d3adb5765784d24d9fd801"
 		},
 		{
 			"ImportPath": "github.com/onsi/ginkgo",
-			"Comment": "v1.1.0-42-gdbb5c6c",
-			"Rev": "dbb5c6caf33238b57facc1d975b1aaca6b90288c"
+			"Comment": "v1.2.0-beta-17-gc5c7614",
+			"Rev": "c5c761488350e56a28c4a91da87e5db7020bedc8"
 		},
 		{
 			"ImportPath": "github.com/onsi/gomega",
-			"Comment": "v1.0-39-gc853a76",
-			"Rev": "c853a76367c700fe446c27bc7e6fc8209ee4e0a1"
+			"Comment": "v1.0-48-g766f404",
+			"Rev": "766f4042b942146e90594d145c5071fa92c0aa9a"
 		}
 	]
 }
