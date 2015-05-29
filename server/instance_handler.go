@@ -106,8 +106,7 @@ func (ih *InstanceHandler) HandlePut(instanceID string, w http.ResponseWriter, r
 	}
 
 	ih.logger.Debug(instanceHandlerLogTag, "Saving settings for instance '%s': '%s'", instanceID, string(reqBody))
-	err = ih.registryStore.Save(instanceID, string(reqBody))
-	if err != nil {
+	if err = ih.registryStore.Save(instanceID, string(reqBody)); err != nil {
 		ih.logger.Debug(instanceHandlerLogTag, "Failed to save settings for instance '%s': '%v'", err)
 		ih.handleBadRequest(w)
 		return
@@ -123,8 +122,7 @@ func (ih *InstanceHandler) HandleDelete(instanceID string, w http.ResponseWriter
 	}
 
 	ih.logger.Debug(instanceHandlerLogTag, "Deleting settings for instance '%s'", instanceID)
-	err := ih.registryStore.Delete(instanceID)
-	if err != nil {
+	if err := ih.registryStore.Delete(instanceID); err != nil {
 		ih.logger.Debug(instanceHandlerLogTag, "Failed to delete settings for instance '%s': '%v'", err)
 		ih.handleBadRequest(w)
 		return

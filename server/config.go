@@ -41,8 +41,7 @@ func (c Config) Validate() error {
 	}
 
 	if c.Protocol == "https" {
-		err := c.TLS.Validate()
-		if err != nil {
+		if err := c.TLS.Validate(); err != nil {
 			return bosherr.WrapError(err, "Validating TLS configuration")
 		}
 	}

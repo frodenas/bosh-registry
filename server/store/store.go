@@ -20,13 +20,11 @@ func NewStore(
 	switch {
 	case config.Adapter == "bolt":
 		boltConfig := BoltConfig{}
-		err := mapstructure.Decode(config.Options, &boltConfig)
-		if err != nil {
+		if err := mapstructure.Decode(config.Options, &boltConfig); err != nil {
 			return nil, bosherr.WrapError(err, "Decoding Bolt Registry Store configuration")
 		}
 
-		err = boltConfig.Validate()
-		if err != nil {
+		if err := boltConfig.Validate(); err != nil {
 			return nil, bosherr.WrapError(err, "Validating Bolt Registry Store configuration")
 		}
 
