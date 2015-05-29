@@ -51,7 +51,7 @@ Create a configuration file:
 Run the registry using the previously created configuration file:
 
 ```
-$ bosh-registry -configPath="Path to configuration file"
+$ bosh-registry -configFile="Path to configuration file"
 ```
 
 ### Docker

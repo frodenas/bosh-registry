@@ -7,7 +7,7 @@ ADD bosh-registry.json /bosh-registry.json
 
 # Command to run
 ENTRYPOINT ["/bosh-registry"]
-CMD ["-configPath=/bosh-registry.json"]
+CMD ["-configFile=/bosh-registry.json"]
 
 # Expose listen ports
 EXPOSE 25777

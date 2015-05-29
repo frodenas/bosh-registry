@@ -15,17 +15,21 @@ type Config struct {
 	Store  store.Config  `json:"store,omitempty"`
 }
 
-func NewConfigFromPath(path string, fs boshsys.FileSystem) (Config, error) {
+func NewConfigFromPath(configFile string, fs boshsys.FileSystem) (Config, error) {
 	var config Config
 
-	bytes, err := fs.ReadFile(path)
+	if configFile == "" {
+		return config, bosherr.Errorf("Must provide a config file")
+	}
+
+	bytes, err := fs.ReadFile(configFile)
 	if err != nil {
-		return config, bosherr.WrapErrorf(err, "Reading config file '%s'", path)
+		return config, bosherr.WrapErrorf(err, "Reading config file '%s'", configFile)
 	}
 
 	err = json.Unmarshal(bytes, &config)
 	if err != nil {
-		return config, bosherr.WrapError(err, "Unmarshalling config")
+		return config, bosherr.WrapError(err, "Unmarshalling config contents")
 	}
 
 	err = config.Validate()
